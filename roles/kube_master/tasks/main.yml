@@ -32,9 +32,15 @@
     daemon_reload: yes
     name: kubelet
 
-- name: Init master
+- name: Check for existing kubelet configuration
+  stat:
+    path: /etc/kubernetes/kubelet.conf
+  register: kubelet_conf
+
+- name: kubeadm init
   shell: kubeadm init --config {{ ansible_env.HOME }}/kubeadm.conf
   register: kubeadm_init
+  when: kubelet_conf.stat.exists == False
 
 - fail:
     msg: "kubeadm init command failed."
