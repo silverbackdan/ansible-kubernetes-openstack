@@ -28,3 +28,12 @@
     path: /etc/bash.bashrc
     create: true
     line: 'alias k="/usr/bin/kubectl"'
+
+- name: add hosts
+  lineinfile:
+    dest: "/etc/hosts"
+    regexp: ".*{{ hostvars[item].ansible_hostname }}$"
+    line: "{{ hostvars[item].ansible_default_ipv4.address }} {{ hostvars[item].ansible_hostname }}"
+    state: present
+  when: hostvars[item].ansible_hostname is defined
+  with_items: "{{groups['all'] | default([])}}"

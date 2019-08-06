@@ -40,6 +40,14 @@
     msg: "kubeadm init command failed."
   when: kubeadm_init.stdout.find ("kubeadm join") == -1
 
+- name: generate a join token
+  command: kubeadm token create --print-join-command
+  register: joincommand
+
+- name: set fact joincommand
+  set_fact:
+    joincommand: "{{ joincommand.stdout }}"
+
 - name: Prepare kube config
   shell: mkdir -p {{ item }}/.kube && cp -a /etc/kubernetes/admin.conf {{ item }}/.kube/config && chmod 755 {{ item }}/.kube/config
   loop:

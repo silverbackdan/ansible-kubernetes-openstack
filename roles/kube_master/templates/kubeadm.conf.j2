@@ -6,10 +6,9 @@ bootstrapTokens:
     ttl: "24h"
 
 ---
-
 apiVersion: kubeadm.k8s.io/v1beta1
 kind: ClusterConfiguration
-clusterName: "lingxian-k8s"
+clusterName: "sbwa-k8s"
 kubernetesVersion: v{{ k8s_version }}
 networking:
   podSubnet: {{ pod_subnet }}

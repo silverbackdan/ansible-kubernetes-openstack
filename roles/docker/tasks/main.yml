@@ -1,4 +1,17 @@
 ---
+- name: Remove swapfile from /etc/fstab
+  mount:
+    name: "{{ item }}"
+    fstype: swap
+    state: absent
+  with_items:
+    - swap
+    - none
+
+- name: Disable swap
+  command: swapoff -a
+  when: ansible_swaptotal_mb > 0
+
 # apt-get install -y apt-transport-https ca-certificates curl
 - name: Install packages
   apt:
@@ -20,12 +33,12 @@
 
 # add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu xenial stable"
 - name: Set up the stable repository
-  apt_repository: repo='deb https://download.docker.com/linux/ubuntu xenial stable' state=present
+  apt_repository: repo='deb https://download.docker.com/linux/ubuntu bionic stable' state=present
 
 # apt-get update; apt install -y docker-ce=17.03.2~ce-0~ubuntu-xenial
 - name: Install docker-ce
   apt:
-    name: docker-ce={{ docker_version }}
+    name: docker-ce # ={{ docker_version }}
     state: present
     update_cache: yes
 
@@ -47,4 +60,4 @@
   systemd:
     name: docker
     state: restarted
-    daemon_reload: no
+    daemon_reload: yes

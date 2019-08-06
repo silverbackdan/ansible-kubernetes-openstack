@@ -1,8 +1,8 @@
 ---
-- name: Prepare kubeadm.conf
-  template:
-    src: kubeadm.conf.j2
-    dest: "{{ ansible_env.HOME }}/kubeadm.conf"
+#- name: Prepare kubeadm.conf
+#  template:
+#    src: kubeadm.conf.j2
+#    dest: "{{ ansible_env.HOME }}/kubeadm.conf"
 
 - name: Make sure /etc/kubernetes exists
   file:
@@ -32,6 +32,9 @@
     daemon_reload: yes
     name: kubelet
 
-- name: Join to cluster
-  shell: kubeadm join --config {{ ansible_env.HOME }}/kubeadm.conf
-  when: bootstrap | bool
+- name: kubeadm join
+  command: "{{ hostvars[groups.master[0]]['joincommand'] }}"
+  args:
+    creates: /etc/kubernetes/kubelet.conf
+  when: kubelet_conf.stat.exists == False
+

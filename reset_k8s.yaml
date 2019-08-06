@@ -1,28 +1,28 @@
 ---
 - name: Drain the node
-  hosts: k8s_master
+  hosts: master
   become: true
   become_method: sudo
   gather_facts: false
 
   vars:
-    rebuild: false
+    rebuild: true
 
   tasks:
     - name: Drain the node
       shell: kubectl drain {{ item }} --delete-local-data --force --ignore-daemonsets
       when: rebuild | bool
       ignore_errors: True
-      with_items: "{{ groups['k8s_nodes'] }}"
+      with_items: "{{ groups['nodes'] }}"
 
     - name: Delete node
       shell: kubectl delete node {{ item }}
       when: rebuild | bool
       ignore_errors: True
-      with_items: "{{ groups['k8s_nodes'] }}"
+      with_items: "{{ groups['nodes'] }}"
 
 - name: Reset k8s on each node
-  hosts: k8s_hosts
+  hosts: all
   become: true
   become_method: sudo
   gather_facts: false

@@ -1,0 +1,11 @@
+export KEY=mac-pro
+export IMAGE="Ubuntu 18.04"
+export NETWORK=k8s
+export SUBNET_UUID=8e66ed05-4414-46c2-a106-7920b0fe44a2
+export EXTERNAL_NETWORK=vlan2803
+export MASTER_FLAVOR=UKF2-std-2x2
+export NODE_FLAVOR=UKF2-io-1x2
+export INCLUDE_HELM=true
+export NODE_COUNT=1
+export FLOATING_IP_POOL=vlan2803
+export FLOATING_IP_NETWORK_UUID=544c39f7-7bc7-4abc-b195-68b56d80c8ac
