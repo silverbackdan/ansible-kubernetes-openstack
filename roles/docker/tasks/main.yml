@@ -35,12 +35,16 @@
 - name: Set up the stable repository
   apt_repository: repo='deb https://download.docker.com/linux/ubuntu bionic stable' state=present
 
-# apt-get update; apt install -y docker-ce=18.09.8~ce-0~ubuntu-xenial
+# apt-get update; apt install -y docker-ce=5:18.09.8~3-0~ubuntu-bionic
 - name: Install docker-ce
   apt:
-    name: docker-ce={{ docker_version }}
+    name: "{{ packages }}"
     state: present
     update_cache: yes
+  vars:
+    packages:
+      - docker-ce={{ docker_version }}
+      - docker-ce-cli={{ docker_version }}
 
 - name: Config docker
   copy:
