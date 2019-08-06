@@ -59,21 +59,11 @@
   roles:
     - common
 
-#- name: Install repo and packages
-#  hosts: all
-#  tags:
-#    - bootstrap
-#  become: true
-#  roles:
-#    - kubeadm
-
 - name: Prepare k8s hosts
   hosts: all
   tags:
     - bootstrap
   become: true
-#  become_method: sudo
-#  gather_facts: false
 
   pre_tasks:
     - name: Install python 2
@@ -107,6 +97,9 @@
           - libssl-dev
           - zlib1g-dev
           - jq
+          - net-tools
+          - atop
+          - snapd
 
     - name: Install pypi libraries
       pip:
@@ -136,7 +129,6 @@
   tags:
     - bootstrap
   roles:
-#    - kubeadm-nodes
     - kube_node
 
 - name: Set up cloud-controller-manager and cinder-csi-plugin

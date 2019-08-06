@@ -42,9 +42,12 @@
   register: kubeadm_init
   when: kubelet_conf.stat.exists == False
 
-- fail:
+- name: "Check if kubeadm init was successful"
+  fail:
     msg: "kubeadm init command failed."
-  when: kubeadm_init.stdout.find ("kubeadm join") == -1
+  when:
+    - kubelet_conf.stat.exists == False
+    - kubeadm_init.stdout.find ("kubeadm join") == -1
 
 - name: generate a join token
   command: kubeadm token create --print-join-command
@@ -60,8 +63,8 @@
     - "{{ ansible_env.HOME }}"
     - /home/ubuntu
 
-- name: Allow pod on master
-  shell: kubectl taint nodes --all node-role.kubernetes.io/master-
+#- name: Allow pod on master
+#  shell: kubectl taint nodes --all node-role.kubernetes.io/master-
 
 - name: Install Calico RBAC
   shell: kubectl apply -f {{ item }}
