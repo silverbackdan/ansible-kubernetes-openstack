@@ -12,9 +12,9 @@
         network_name: "{{ network_name }}"
         name: "{{ subnet_name }}"
         cidr: 10.8.10.0/24
-        dns_nameservers:
-          - 8.8.8.8
-          - 8.8.4.4
+#        dns_nameservers:
+#          - 8.8.8.8
+#          - 8.8.4.4
       register: subnet
 
     - name: create router

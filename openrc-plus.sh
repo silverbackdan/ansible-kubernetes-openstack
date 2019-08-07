@@ -1,5 +1,5 @@
 export KEY=mac-pro
-export IMAGE="Ubuntu 18.04"
+export IMAGE="Ubuntu 16.04"
 export NETWORK=k8s
 #export SUBNET_UUID=8e66ed05-4414-46c2-a106-7920b0fe44a2
 export EXTERNAL_NETWORK=vlan2803
