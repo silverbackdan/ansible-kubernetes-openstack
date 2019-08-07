@@ -12,9 +12,6 @@
         network_name: "{{ network_name }}"
         name: "{{ subnet_name }}"
         cidr: 10.8.10.0/24
-#        dns_nameservers:
-#          - 8.8.8.8
-#          - 8.8.4.4
       register: subnet
 
     - name: create router
@@ -61,9 +58,12 @@
 
 - name: Prepare k8s hosts
   hosts: all
+  become: true
+  become_method: sudo
+  gather_facts: false
   tags:
     - bootstrap
-  become: true
+    - prepare
 
   pre_tasks:
     - name: Install python 2
@@ -119,6 +119,8 @@
   hosts: master
   tags:
     - bootstrap
+    - prepare
+    - setup
   become: true
   roles:
     - kube_master
@@ -128,6 +130,8 @@
   become: true
   tags:
     - bootstrap
+    - prepare
+    - setup
   roles:
     - kube_node
 
@@ -136,5 +140,8 @@
   become: true
   become_method: sudo
   gather_facts: true
+  tags:
+    - prepare
+    - setup
   roles:
     - kube_cloud_controller_manager

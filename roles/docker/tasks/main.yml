@@ -44,7 +44,6 @@
   vars:
     packages:
       - docker-ce={{ docker_version }}
-      - docker-ce-cli={{ docker_version }}
 
 - name: Config docker
   copy:
